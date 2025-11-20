@@ -48,7 +48,7 @@ VitalGuard is an AI-powered mobile platform for continuous health monitoring. It
 
 ## 3. Components
 
-1. **Mobile Device:** Android/iOS smartphone running Flutter/Kivy app.
+1. **Mobile Device:** Android/iOS smartphone running Flutter
 2. **Sensors:** Accelerometer, Gyroscope, Microphone, GPS (optional Camera).
 3. **AI Detection Engine:** TensorFlow Lite models for falls, abnormal breathing, heart rate, cardiac arrest.
 4. **Local Dashboard:** Visualizes real-time vitals, logs events.
@@ -70,7 +70,7 @@ VitalGuard is an AI-powered mobile platform for continuous health monitoring. It
 - Optional cloud data anonymized and encrypted
 
 ## 6. Technology Stack
-- Mobile: Flutter/Kivy
+- Mobile: Flutter
 - Backend (optional): FastAPI
 - ML: TensorFlow Lite
 - Database (local): SQLite / Hive
