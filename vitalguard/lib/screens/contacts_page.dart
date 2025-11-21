@@ -35,138 +35,144 @@ class _ContactsPageState extends State<ContactsPage> {
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
           title: const Text('Add Emergency Contact'),
-          content: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                    hintText: 'e.g., Mom, Dad, Spouse',
-                    prefixIcon: Icon(Icons.person),
+          content: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      hintText: 'e.g., Mom, Dad, Spouse',
+                      prefixIcon: Icon(Icons.person),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a name';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(
-                    labelText: 'Phone Number',
-                    hintText: '+250792957530',
-                    prefixIcon: Icon(Icons.phone),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: const InputDecoration(
+                      labelText: 'Phone Number',
+                      hintText: '+250792957530',
+                      prefixIcon: Icon(Icons.phone),
+                    ),
+                    keyboardType: TextInputType.phone,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a phone number';
+                      }
+                      if (!value.contains(RegExp(r'^\+?[0-9]{10,15}$'))) {
+                        return 'Please enter a valid phone number';
+                      }
+                      return null;
+                    },
                   ),
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a phone number';
-                    }
-                    if (!value.contains(RegExp(r'^\+?[0-9]{10,15}$'))) {
-                      return 'Please enter a valid phone number';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Alert Method',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.darkText,
+                  const SizedBox(height: 20),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Alert Method',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.darkText,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                // WhatsApp Option
-                RadioListTile<AlertMethod>(
-                  value: AlertMethod.whatsapp,
-                  groupValue: _selectedAlertMethod,
-                  onChanged: (value) {
-                    setDialogState(() {
-                      _selectedAlertMethod = value!;
-                    });
-                  },
-                  title: const Row(
-                    children: [
-                      Icon(Icons.chat, color: AppTheme.successGreen, size: 20),
-                      SizedBox(width: 8),
-                      Text('WhatsApp Message'),
-                    ],
+                  const SizedBox(height: 8),
+                  // WhatsApp Option
+                  RadioListTile<AlertMethod>(
+                    value: AlertMethod.whatsapp,
+                    groupValue: _selectedAlertMethod,
+                    onChanged: (value) {
+                      setDialogState(() {
+                        _selectedAlertMethod = value!;
+                      });
+                    },
+                    title: Row(
+                      children: const [
+                        Icon(
+                          Icons.chat,
+                          color: AppTheme.successGreen,
+                          size: 20,
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(child: Text('WhatsApp Message')),
+                      ],
+                    ),
+                    dense: true,
                   ),
-                  dense: true,
-                ),
-                // SMS Option
-                RadioListTile<AlertMethod>(
-                  value: AlertMethod.sms,
-                  groupValue: _selectedAlertMethod,
-                  onChanged: (value) {
-                    setDialogState(() {
-                      _selectedAlertMethod = value!;
-                    });
-                  },
-                  title: const Row(
-                    children: [
-                      Icon(
-                        Icons.message,
-                        color: AppTheme.primaryBlue,
-                        size: 20,
-                      ),
-                      SizedBox(width: 8),
-                      Text('SMS Text Message'),
-                    ],
+                  // SMS Option
+                  RadioListTile<AlertMethod>(
+                    value: AlertMethod.sms,
+                    groupValue: _selectedAlertMethod,
+                    onChanged: (value) {
+                      setDialogState(() {
+                        _selectedAlertMethod = value!;
+                      });
+                    },
+                    title: Row(
+                      children: const [
+                        Icon(
+                          Icons.message,
+                          color: AppTheme.primaryBlue,
+                          size: 20,
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(child: Text('SMS Text Message')),
+                      ],
+                    ),
+                    dense: true,
                   ),
-                  dense: true,
-                ),
-                // Phone Call Option
-                RadioListTile<AlertMethod>(
-                  value: AlertMethod.phoneCall,
-                  groupValue: _selectedAlertMethod,
-                  onChanged: (value) {
-                    setDialogState(() {
-                      _selectedAlertMethod = value!;
-                    });
-                  },
-                  title: const Row(
-                    children: [
-                      Icon(Icons.phone, color: AppTheme.warningRed, size: 20),
-                      SizedBox(width: 8),
-                      Text('Regular Phone Call'),
-                    ],
+                  // Phone Call Option
+                  RadioListTile<AlertMethod>(
+                    value: AlertMethod.phoneCall,
+                    groupValue: _selectedAlertMethod,
+                    onChanged: (value) {
+                      setDialogState(() {
+                        _selectedAlertMethod = value!;
+                      });
+                    },
+                    title: Row(
+                      children: const [
+                        Icon(Icons.phone, color: AppTheme.warningRed, size: 20),
+                        SizedBox(width: 8),
+                        Expanded(child: Text('Regular Phone Call')),
+                      ],
+                    ),
+                    dense: true,
                   ),
-                  dense: true,
-                ),
-                // WhatsApp Call Option
-                RadioListTile<AlertMethod>(
-                  value: AlertMethod.whatsappCall,
-                  groupValue: _selectedAlertMethod,
-                  onChanged: (value) {
-                    setDialogState(() {
-                      _selectedAlertMethod = value!;
-                    });
-                  },
-                  title: const Row(
-                    children: [
-                      Icon(
-                        Icons.video_call,
-                        color: AppTheme.successGreen,
-                        size: 20,
-                      ),
-                      SizedBox(width: 8),
-                      Text('WhatsApp Voice Call'),
-                    ],
+                  // WhatsApp Call Option
+                  RadioListTile<AlertMethod>(
+                    value: AlertMethod.whatsappCall,
+                    groupValue: _selectedAlertMethod,
+                    onChanged: (value) {
+                      setDialogState(() {
+                        _selectedAlertMethod = value!;
+                      });
+                    },
+                    title: Row(
+                      children: const [
+                        Icon(
+                          Icons.video_call,
+                          color: AppTheme.successGreen,
+                          size: 20,
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(child: Text('WhatsApp Voice Call')),
+                      ],
+                    ),
+                    dense: true,
                   ),
-                  dense: true,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           actions: [
