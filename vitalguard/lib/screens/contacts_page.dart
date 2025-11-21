@@ -15,8 +15,7 @@ class _ContactsPageState extends State<ContactsPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
-  AlertMethod _selectedAlertMethod =
-      AlertMethod.whatsapp; // Track selected method
+  AlertMethod _selectedAlertMethod = AlertMethod.whatsapp;
 
   @override
   void dispose() {
@@ -28,7 +27,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void _showAddContactDialog(BuildContext context) {
     _nameController.clear();
     _phoneController.clear();
-    _selectedAlertMethod = AlertMethod.whatsapp; // Reset to default
+    _selectedAlertMethod = AlertMethod.whatsapp;
 
     showDialog(
       context: context,
@@ -87,7 +86,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // WhatsApp Option
+                  // WhatsApp Message Option
                   RadioListTile<AlertMethod>(
                     value: AlertMethod.whatsapp,
                     groupValue: _selectedAlertMethod,
@@ -394,23 +393,9 @@ class _ContactsPageState extends State<ContactsPage> {
                         Row(
                           children: [
                             Icon(
-                              contact.alertMethod == AlertMethod.whatsapp
-                                  ? Icons.chat
-                                  : contact.alertMethod == AlertMethod.sms
-                                  ? Icons.message
-                                  : contact.alertMethod ==
-                                        AlertMethod.whatsappCall
-                                  ? Icons.video_call
-                                  : Icons.phone,
+                              Icons.phone,
                               size: 14,
-                              color: contact.alertMethod == AlertMethod.whatsapp
-                                  ? AppTheme.successGreen
-                                  : contact.alertMethod == AlertMethod.sms
-                                  ? AppTheme.primaryBlue
-                                  : contact.alertMethod ==
-                                        AlertMethod.whatsappCall
-                                  ? AppTheme.successGreen
-                                  : AppTheme.warningRed,
+                              color: AppTheme.primaryBlue,
                             ),
                             const SizedBox(width: 4),
                             Text(
@@ -423,19 +408,40 @@ class _ContactsPageState extends State<ContactsPage> {
                           ],
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          contact.alertMethod == AlertMethod.whatsapp
-                              ? 'WhatsApp Message'
-                              : contact.alertMethod == AlertMethod.sms
-                              ? 'SMS Alert'
-                              : contact.alertMethod == AlertMethod.whatsappCall
-                              ? 'WhatsApp Call'
-                              : 'Phone Call Alert',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: AppTheme.greyText.withOpacity(0.8),
-                            fontStyle: FontStyle.italic,
-                          ),
+                        Row(
+                          children: [
+                            Icon(
+                              contact.alertMethod == AlertMethod.whatsapp
+                                  ? Icons.chat
+                                  : contact.alertMethod == AlertMethod.sms
+                                  ? Icons.message
+                                  : contact.alertMethod == AlertMethod.phoneCall
+                                  ? Icons.phone
+                                  : Icons.video_call,
+                              size: 14,
+                              color: contact.alertMethod == AlertMethod.whatsapp
+                                  ? AppTheme.successGreen
+                                  : contact.alertMethod == AlertMethod.sms
+                                  ? AppTheme.primaryBlue
+                                  : contact.alertMethod == AlertMethod.phoneCall
+                                  ? AppTheme.warningRed
+                                  : AppTheme.successGreen,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              contact.alertMethod == AlertMethod.whatsapp
+                                  ? 'WhatsApp Message'
+                                  : contact.alertMethod == AlertMethod.sms
+                                  ? 'SMS'
+                                  : contact.alertMethod == AlertMethod.phoneCall
+                                  ? 'Phone Call'
+                                  : 'WhatsApp Call',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppTheme.greyText,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

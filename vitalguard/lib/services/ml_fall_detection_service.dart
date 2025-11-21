@@ -278,9 +278,14 @@ class MLFallDetectionService extends ChangeNotifier {
       // This reduces false positives from stationary phone or bad model predictions
       if (isFall && maxProbability > 0.85) {
         // Increased to 85% confidence threshold
+        debugPrint('');
+        debugPrint('🚨🚨🚨 FALL DETECTED 🚨🚨🚨');
+        debugPrint('🚨 Type: $predictedActivity');
         debugPrint(
-          '🚨 FALL DETECTED: $predictedActivity (${(maxProbability * 100).toStringAsFixed(1)}% confidence)',
+          '🚨 Confidence: ${(maxProbability * 100).toStringAsFixed(1)}%',
         );
+        debugPrint('🚨 Triggering emergency alert...');
+        debugPrint('');
         _triggerFallAlert(predictedActivity);
       } else if (isFall) {
         debugPrint(

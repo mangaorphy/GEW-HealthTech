@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../utils/app_theme.dart';
+import '../services/emergency_service.dart';
+import '../models/event_log.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -287,6 +290,51 @@ class _HomePageState extends State<HomePage>
                           const SizedBox(width: 12),
                           const Text(
                             'Manage Emergency Contacts',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Test Alert Button (for debugging)
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        final emergencyService = Provider.of<EmergencyService>(
+                          context,
+                          listen: false,
+                        );
+                        emergencyService.triggerEmergencyAlert(EventType.fall);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('🧪 Test fall alert triggered!'),
+                            backgroundColor: Colors.orange,
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.orange,
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        side: BorderSide(color: Colors.orange, width: 2),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.bug_report, size: 24),
+                          const SizedBox(width: 12),
+                          const Text(
+                            'Test Fall Alert (Debug)',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,

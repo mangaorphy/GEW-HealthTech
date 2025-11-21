@@ -33,14 +33,21 @@ class EmergencyService extends ChangeNotifier {
         _contacts = decoded
             .map((item) => EmergencyContact.fromJson(item))
             .toList();
-        debugPrint('Loaded ${_contacts.length} emergency contacts');
+        debugPrint('✅ Loaded ${_contacts.length} emergency contacts:');
+        for (var contact in _contacts) {
+          debugPrint(
+            '   📞 ${contact.name} - ${contact.phoneNumber} (${contact.alertMethod})',
+          );
+        }
       } else {
         _contacts = [];
-        debugPrint('No emergency contacts found');
+        debugPrint(
+          '⚠️ No emergency contacts found - please add contacts first!',
+        );
       }
       notifyListeners();
     } catch (e) {
-      debugPrint('Error loading contacts: $e');
+      debugPrint('❌ Error loading contacts: $e');
       _contacts = [];
     }
   }
@@ -71,7 +78,24 @@ class EmergencyService extends ChangeNotifier {
   }
 
   Future<void> triggerEmergencyAlert(EventType eventType) async {
-    if (_isAlertActive) return;
+    if (_isAlertActive) {
+      debugPrint('⚠️ Alert already active, ignoring duplicate trigger');
+      return;
+    }
+
+    debugPrint('🚨 TRIGGERING EMERGENCY ALERT: $eventType');
+    debugPrint('📋 Number of contacts: ${_contacts.length}');
+
+    if (_contacts.isEmpty) {
+      debugPrint('⚠️ WARNING: No emergency contacts configured!');
+    } else {
+      debugPrint('📞 Will alert these contacts:');
+      for (var contact in _contacts) {
+        debugPrint(
+          '   - ${contact.name} (${contact.phoneNumber}) via ${contact.alertMethod}',
+        );
+      }
+    }
 
     _isAlertActive = true;
     _currentEventType = eventType; // Store the event type
@@ -191,7 +215,7 @@ class EmergencyService extends ChangeNotifier {
       message += 'Location: https://maps.google.com/?q=${event.location}\n';
     }
 
-    message += 'Please check on the user immediately!';
+    message = 'Please check on the user immediately!';
 
     return message;
   }

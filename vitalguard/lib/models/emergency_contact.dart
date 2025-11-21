@@ -4,14 +4,14 @@ class EmergencyContact {
   final String name;
   final String phoneNumber;
   final bool isEmergencyServices;
-  final AlertMethod alertMethod; // Changed from useWhatsApp to alertMethod
+  final AlertMethod alertMethod;
 
   EmergencyContact({
     required this.name,
     required this.phoneNumber,
     this.isEmergencyServices = false,
-    this.alertMethod = AlertMethod.whatsapp, // Default to WhatsApp
-  });
+    AlertMethod? alertMethod,
+  }) : alertMethod = alertMethod ?? AlertMethod.whatsapp;
 
   Map<String, dynamic> toJson() {
     return {
@@ -23,13 +23,24 @@ class EmergencyContact {
   }
 
   factory EmergencyContact.fromJson(Map<String, dynamic> json) {
-    // Handle migration from old useWhatsApp field
-    AlertMethod method = AlertMethod.whatsapp;
+    AlertMethod method;
+
     if (json['alertMethod'] != null) {
       method = AlertMethod.values.firstWhere(
         (e) => e.toString() == json['alertMethod'],
         orElse: () => AlertMethod.whatsapp,
       );
+    } else if (json['alertMethods'] != null) {
+      // Backward compatibility: take first method from old list format
+      final methods = json['alertMethods'] as List;
+      if (methods.isNotEmpty) {
+        method = AlertMethod.values.firstWhere(
+          (e) => e.toString() == methods[0],
+          orElse: () => AlertMethod.whatsapp,
+        );
+      } else {
+        method = AlertMethod.whatsapp;
+      }
     } else if (json['useWhatsApp'] == true) {
       method = AlertMethod.whatsapp;
     } else {
